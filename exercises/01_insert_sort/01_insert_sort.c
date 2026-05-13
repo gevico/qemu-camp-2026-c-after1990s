@@ -7,9 +7,36 @@ typedef struct {
     int score;
 } Student;
 
+void print_all_students(Student students[],int n)
+{
+    for (int i = 0; i < n; i++) {
+        printf("%s %d\n", students[i].name, students[i].score);
+    }
+    printf("\n");
+}
 void insertion_sort(Student students[], int n) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    const int max_size = 50;
+    print_all_students(students, n);
+    for (int i = 0; i < n; i++)
+    {
+        Student keyStudent = students[i];
+        int j = i -1;
+        for (j = i-1; j >= 0; j--)
+        {
+            if (students[j].score < keyStudent.score)
+            {
+                //move all items from i to j
+                students[j+1] = students[j];
+            }
+            else
+            {
+                break;
+            }
+        }
+        students[j+1]  = keyStudent;
+        print_all_students(students, n);
+    }
 }
 
 int main(void) {
