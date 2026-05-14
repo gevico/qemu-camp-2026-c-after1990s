@@ -21,13 +21,19 @@ typedef struct {
 // djb2哈希函数
 unsigned long djb2_hash(const char *str) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    unsigned long hash = 5381;
+    for (int i = 0; str[i] != 0; i++)
+    {
+        hash = hash * 33 +str[i];
+    }
+    return hash;
 }
 
 // 创建哈希表
 HashTable *create_hash_table(int size) {
     HashTable *ht = malloc(sizeof(HashTable));
-    ht->table = calloc(size, sizeof(HashNode *));
+    ht->table = malloc(size*sizeof(void*));
+    memset(ht->table, 0, size*sizeof(void*));
     ht->size = size;
     return ht;
 }
@@ -37,13 +43,52 @@ void hash_table_insert(HashTable *ht, const char *word) {
     unsigned long hash = djb2_hash(word) % ht->size;
 
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    HashNode* prev = NULL;
+    HashNode* node = ht->table[hash];
+    if (node == NULL)
+    {
+        ht->table[hash] = malloc(sizeof(HashNode));
+        node = ht->table[hash];
+        node->word = malloc(256);
+        node->count = 1;
+        node->next = NULL;
+        strcpy(node->word, word);
+        return ;
+    }
+    while (node != NULL)
+    {
+        if (strcmp(node->word, word) == 0) 
+        {
+            node->count++;
+            return;
+        }
+        prev = node;
+        node = node->next;
+    }
+
+    prev->next = malloc(sizeof(HashNode));
+    prev->next->count = 1;
+    prev->next->word = malloc(256);
+    memset(prev->next->word, 0, 256);
+    memcpy(prev->next->word, word, strlen(word));
+    prev->next->next = NULL;
 }
 
 // 从哈希表中获取所有单词及其计数
 void get_all_words(HashTable *ht, HashNode **nodes, int *count) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+
+    *count = 0;
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        if (ht->table[i] != NULL)
+        {
+            nodes[*count] = ht->table[i];
+            (*count)++;
+        }
+        
+    }
+    
+
 }
 
 // 比较函数用于排序
@@ -52,8 +97,12 @@ int compare_nodes(const void *a, const void *b) {
     HashNode *node_b = *(HashNode **)b;
     
     // 先按计数降序，再按字母升序
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    if      (node_a->count < node_b->count) return 1;
+    else if (node_a->count > node_b->count) return -1;
+    else 
+    {
+        return strcmp(node_a->word, node_b->word);
+    }
 }
 
 // 释放哈希表内存
@@ -71,10 +120,41 @@ void free_hash_table(HashTable *ht) {
     free(ht);
 }
 
+int isInAplhabet(const char c)
+{
+    return (c>='a' && c<='z') ||
+           (c>='A' && c<='Z');
+}
+
 // 从字符串中获取下一个单词
 char *get_next_word(const char **text) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    //skip non-char
+    while (!isInAplhabet(**text))
+    {
+        if (**text == 0) 
+            return NULL;
+        printf("%s\n", *text);
+        (*text)++;
+    }
+
+    char* word = (char*)malloc(256);
+    memset(word, 0, 256);
+    char* result = word;
+    do {
+        const char c = **text;
+        if (isInAplhabet(c))
+        {
+            (*text)++;
+            *word = c;
+            word++;            
+        }
+        else
+        {
+            break;
+        }
+    }while (1);
+    return result;
 }
 
 int main(int argc, char *argv[]) {
