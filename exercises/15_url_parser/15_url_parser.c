@@ -12,8 +12,17 @@
 int parse_url(const char* url) {
     int err = 0;
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    int i = 0;
+    while (url[i] != 0 && url[i] != '?') i++;
+    i++;
+
+    while (url[i] != 0)
+    {
+        url[i] == '&' ? putc('\n', stdout) :
+            url[i] == '=' ? putc(' ', stdout) : putc(url[i], stdout);
+        i++;
+    }
+    return 0;
 
 exit:
     return err;
