@@ -21,10 +21,10 @@ typedef struct {
 // djb2哈希函数
 unsigned long djb2_hash(const char *str) {
     // TODO: 在这里添加你的代码
-    unsigned long hash = 5381;
+    unsigned long hash = 15381;
     for (int i = 0; str[i] != 0; i++)
     {
-        hash = hash * 33 +str[i];
+        hash = hash * 133 +str[i];
     }
     return hash;
 }
@@ -56,7 +56,7 @@ void hash_table_insert(HashTable *ht, const char *word) {
         return ;
     }
     while (node != NULL)
-    {
+    {   
         if (strcmp(node->word, word) == 0) 
         {
             node->count++;
@@ -80,10 +80,12 @@ void get_all_words(HashTable *ht, HashNode **nodes, int *count) {
     *count = 0;
     for (int i = 0; i < TABLE_SIZE; i++)
     {
-        if (ht->table[i] != NULL)
+        HashNode* cur_node = ht->table[i];
+        while (cur_node != NULL)
         {
-            nodes[*count] = ht->table[i];
+            nodes[*count] = cur_node;
             (*count)++;
+            cur_node = cur_node->next;
         }
         
     }
@@ -134,7 +136,6 @@ char *get_next_word(const char **text) {
     {
         if (**text == 0) 
             return NULL;
-        printf("%s\n", *text);
         (*text)++;
     }
 
@@ -154,6 +155,7 @@ char *get_next_word(const char **text) {
             break;
         }
     }while (1);
+    
     return result;
 }
 
