@@ -30,10 +30,6 @@ int parse_url(const char* url) {
             printf(", ");
             printf("value = ");
         }
-        else if (url[i] == '+')
-        {
-            printf(" ");
-        }
         else
         {
             putc(url[i], stdout);
