@@ -17,10 +17,12 @@ int main() {
     
     Student *students[3];
     
-    for (int i = 0; i < 3; i++) 
-    {
-	    // TODO: 在这里添加你的代码
-        // I AM NOT DONE
+    // 从文件读取学生信息
+    int n = 0;
+    while (n < 3 && 
+        (students[n] = malloc(sizeof(Student))) != NULL && 
+        fscanf(file, "%s %s %d",students[n]->id, students[n]->name, &students[n]->age) == 3) {
+        n++;
     }
     fclose(file);
     

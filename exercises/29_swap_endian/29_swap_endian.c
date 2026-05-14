@@ -4,6 +4,7 @@
 uint32_t swap_endian(uint32_t num) {
     // TODO: 在这里添加你的代码
     // I AM NOT DONE
+    return num << 24 | num << 8 & 0x00FF0000 | num >> 8 & 0x0000ff00 | num >> 24;
 }
 
 int main(int argc, char* argv[]) {

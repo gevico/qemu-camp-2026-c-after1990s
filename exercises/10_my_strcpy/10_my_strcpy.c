@@ -4,8 +4,19 @@ int main() {
     char source[] = "Hello, World! This is a test string for my_strcpy function.\n";
     char destination[101];
     
-	// TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    for(int i = 0; i < 101; i++)
+    {
+        if (source[i] != 0)
+        {
+            destination[i] = source[i];
+        }
+        else
+        {
+            destination[i] = 0;
+            break;
+        }
+    }
+
     
     printf("拷贝后的字符串: %s", destination);
     
