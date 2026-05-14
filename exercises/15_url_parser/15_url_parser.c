@@ -6,7 +6,7 @@
 /**
  * URL参数解析器
  * 输入：包含http/https超链接的字符串
- * 输出：解析出所有的key-value键值对，每行显示一个
+ * 输出：解析出所有的key-value键值对，每行显示一个 key = name, value = John
  */
 
 int parse_url(const char* url) {
@@ -15,11 +15,29 @@ int parse_url(const char* url) {
     int i = 0;
     while (url[i] != 0 && url[i] != '?') i++;
     i++;
+    int toggleKey = 0;
 
+    printf("key = ");
     while (url[i] != 0)
     {
-        url[i] == '&' ? putc('\n', stdout) :
-            url[i] == '=' ? putc(' ', stdout) : putc(url[i], stdout);
+        if (url[i] == '&') {
+            toggleKey = 0;
+            putc('\n', stdout);
+            printf("key = ");
+        }
+        else if (url[i] == '=')
+        {
+            printf(", ");
+            printf("value = ");
+        }
+        else if (url[i] == '+')
+        {
+            printf(" ");
+        }
+        else
+        {
+            putc(url[i], stdout);
+        }
         i++;
     }
     return 0;
